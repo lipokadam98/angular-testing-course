@@ -2,8 +2,7 @@
 
 import {Request, Response} from 'express';
 import {COURSES} from "./db-data";
-
-
+import { Course } from '../src/app/model/course';
 
 export function getAllCourses(req: Request, res: Response) {
 
@@ -18,7 +17,7 @@ export function getCourseById(req: Request, res: Response) {
 
     const courses:any = Object.values(COURSES);
 
-    const course = courses.find(course => course.id == courseId);
+    const course:Course = courses.find((course: { id: string; }) => course.id == courseId);
 
     res.status(200).json(course);
 }
