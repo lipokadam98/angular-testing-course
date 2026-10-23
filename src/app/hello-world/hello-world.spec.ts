@@ -1,18 +1,21 @@
 import {describe, it, expect, beforeEach} from "vitest";
-import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {HelloWorld} from './hello-world';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {DebugElement} from '@angular/core';
 
 describe('HelloWorld', () => {
-  let fixture: ComponentFixture<HelloWorld>;
+  let fixture: ComponentFixture<HelloWorld>
   let de: DebugElement;
   let el: HTMLElement;
   let component: HelloWorld;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HelloWorld]
+      imports: [
+        HelloWorld
+      ]
     }).compileComponents();
+
     fixture = TestBed.createComponent(HelloWorld);
     de = fixture.debugElement;
     el = de.nativeElement;
@@ -27,6 +30,7 @@ describe('HelloWorld', () => {
   it('should display the message', () => {
     const h1 = el.querySelector("h1");
     expect(h1).toBeDefined();
+    debugger;
     expect(h1?.textContent).toEqual(component.message);
   })
 
