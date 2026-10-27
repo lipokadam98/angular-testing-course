@@ -32,26 +32,28 @@ describe('CoursesCardList', () => {
   it('should display the course list', () => {
     const cardTitles = de.queryAll(By.css(".course-card .card-header"));
     expect(cardTitles.length).toBe(2);
-    const titleEl = cardTitles[0].nativeElement;
-    expect(titleEl.textContent).toBe("Beginner Course");
-  });
 
-  it('should display message when no courses', () => {
+    const titleEl = cardTitles[0].nativeElement as Element;
+    expect(titleEl.textContent).toBe("Beginner Course");
+  })
+
+  it('should display the no courses found message', () => {
     fixture.componentRef.setInput('courses', []);
     fixture.detectChanges();
-    const msg = de.query(By.css(".no-courses"));
-    expect(msg).toBeTruthy();
-    expect(msg.nativeElement.textContent).toContain("No courses found");
-  });
 
-  it('should open dialog when clicking the edit button', () => {
+    const noCoursesDiv = de.query(By.css(".no-courses"));
+    const noCoursesEl = noCoursesDiv.nativeElement as Element;
+    expect(noCoursesEl.textContent).toBe("No courses found.")
+  })
+
+  it('should open the dialog when clicking the edit button', () => {
     const btn = de.query(By.css(".course-card:first-child .edit-btn"));
     btn.nativeElement.click();
     fixture.detectChanges();
 
     const form = document.querySelectorAll(".course-form");
-    expect(form, "The edit course form should be visible.").toBeTruthy();
-  });
+    expect(form, "The edit course form should be visible").toBeTruthy();
+  })
 
 });
 
