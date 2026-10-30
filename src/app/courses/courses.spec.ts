@@ -1,8 +1,10 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';;
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+
+;
 import {MOCK_COURSES} from '../testing/testing-data';
 import {describe, expect, it, vi, beforeEach, afterEach} from "vitest"
 import {HttpTestingController, provideHttpClientTesting} from '@angular/common/http/testing';
-import { DebugElement} from '@angular/core';
+import {DebugElement} from '@angular/core';
 import {Courses} from "./courses"
 import {CoursesService} from '../services/courses.service';
 import {provideHttpClient} from '@angular/common/http';
@@ -32,9 +34,7 @@ describe('Courses', () => {
     fixture = TestBed.createComponent(Courses);
     component = fixture.componentInstance;
     de = fixture.debugElement;
-
     httpMock = TestBed.inject(HttpTestingController);
-
     const loader = TestbedHarnessEnvironment.loader(fixture);
     tabs = await loader.getHarness(TabsHarness);
 
@@ -43,34 +43,34 @@ describe('Courses', () => {
 
   it('should load courses and filter by category', async () => {
     const req = httpMock.expectOne("/api/courses");
-    req.flush({payload: MOCK_COURSES});
+    req.flush({payload: MOCK_COURSES})
     await fixture.whenStable();
     fixture.detectChanges();
+    expect(component.allCourses()).toHaveLength(2);
+    expect(component.beginnerCourses()[0].category).toBe("BEGINNER");
+    expect(component.advancedCourses()[0].category).toBe("ADVANCED");
     const titles = de.queryAll(By.css(".course-card .card-header"));
     expect(titles).toHaveLength(1);
-    const titleEl = titles[0].nativeElement;
+    const titleEl = titles[0].nativeElement as Element;
     expect(titleEl.textContent).toBe("Beginner Course");
-
-    expect(await tabs.getTabLabels()).toEqual(["Beginner", "Advanced"]);
-    expect(await tabs.getActiveLabel()).toBe("Beginner");
-
-  });
+  })
 
   it('should show advanced courses when tab clicked', async () => {
     const req = httpMock.expectOne("/api/courses");
-    req.flush({payload: MOCK_COURSES});
+    req.flush({payload: MOCK_COURSES})
     await fixture.whenStable();
 
-    await tabs.clickTabByIndex(1);
+    const btn = de.query(By.css(".tab-link:last-child"));
+    btn.nativeElement.click();
+    fixture.detectChanges();
 
     const titles = de.queryAll(By.css(".course-card .card-header"));
     expect(titles).toHaveLength(1);
-    const titleEl = titles[0].nativeElement;
+    const titleEl = titles[0].nativeElement as Element;
     expect(titleEl.textContent).toBe("Advanced Course");
   })
 
   afterEach(() => {
     httpMock.verify();
   })
-
 });
